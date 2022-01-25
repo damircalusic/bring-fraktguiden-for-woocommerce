@@ -222,6 +222,7 @@ class Bring_Booking_Consignment_Request extends Bring_Consignment_Request {
 		}
 
 		$evarsling = ( $this->service ? $this->service->vas_match( [ '2084', 'EVARSLING' ] ) : false );
+		$bag_on_door = ( $this->service ? $this->service->vas_match( [ '1081' ] ) : false );
 		if ( $evarsling ) {
 			$consignments['product']['additionalServices'] = [
 				[
@@ -231,6 +232,15 @@ class Bring_Booking_Consignment_Request extends Bring_Consignment_Request {
 				],
 			];
 		}
+
+		if ( $bag_on_door ) {
+			$consignments['product']['additionalServices'] = [
+				[
+					'id'             => $bag_on_door,
+					'customerNumber' => $this->customer_number,
+				],
+			];
+		};
 
 		$data = [
 			'testIndicator' => ( 'yes' === Fraktguiden_Helper::get_option( 'booking_test_mode_enabled' ) ),
